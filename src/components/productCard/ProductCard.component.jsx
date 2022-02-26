@@ -19,9 +19,16 @@ export const ProductCard = (props) => {
     <TouchableOpacity>
       <View style={styles.container}>
         <View style={{ height: 100, alignItems: "center" }}>
-          <Image style={{ flex: 1, resizeMode: "contain" }} />
+          <Image
+            style={{ flex: 1, resizeMode: "contain" }}
+            source={{
+              uri: "https://cdn.pixabay.com/photo/2012/04/01/17/29/box-23649_960_720.png",
+            }}
+          />
         </View>
-        <Text style={{ fontWeight: FONTS.Bold, fontSize: 17 }}>{name}</Text>
+        <Text style={{ fontWeight: FONTS.Bold, fontSize: 17, marginTop: 10 }}>
+          {name}
+        </Text>
         <View
           style={{
             flexDirection: "row",
@@ -29,7 +36,9 @@ export const ProductCard = (props) => {
             marginTop: 5,
           }}
         >
-          <Text>{price} FCFA</Text>
+          <Text style={{ fontSize: 19, fontWeight: FONTS.Bold }}>
+            {price} FCFA
+          </Text>
           <View
             style={{
               height: 25,
