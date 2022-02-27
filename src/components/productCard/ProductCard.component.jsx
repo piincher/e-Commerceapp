@@ -22,7 +22,9 @@ export const ProductCard = (props) => {
           <Image
             style={{ flex: 1, resizeMode: "contain" }}
             source={{
-              uri: "https://cdn.pixabay.com/photo/2012/04/01/17/29/box-23649_960_720.png",
+              uri: image
+                ? image
+                : "https://images.unsplash.com/photo-1471897488648-5eae4ac6686b",
             }}
           />
         </View>

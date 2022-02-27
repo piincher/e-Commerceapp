@@ -1,7 +1,6 @@
-import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
 import ProductScreen from "./src/screens/product/ProductScreen.component";
-
+import { COLORS } from "./src/constants/Colors";
 // screens
 
 export default function App() {
@@ -15,7 +14,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: COLORS.white,
     alignItems: "center",
     justifyContent: "center",
   },
