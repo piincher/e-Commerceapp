@@ -16,19 +16,26 @@ const width = Dimensions.get("screen").width / 2 - 30;
 export const ProductCard = (props) => {
   const { name, price, image, countInStock } = props;
   return (
-    <TouchableOpacity>
+    <TouchableOpacity activeOpacity={0.5}>
       <View style={styles.container}>
-        <View style={{ height: 100, alignItems: "center" }}>
+        <View
+          style={{
+            height: 100,
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
           <Image
-            style={{ flex: 1, resizeMode: "contain" }}
+            resizeMode="contain"
+            style={{ flex: 1, height: 100, width: 100 }}
             source={{
               uri: image
                 ? image
-                : "https://images.unsplash.com/photo-1471897488648-5eae4ac6686b",
+                : "https://cdn.pixabay.com/photo/2012/04/01/17/29/box-23649_960_720.png",
             }}
           />
         </View>
-        <Text style={{ fontWeight: FONTS.Bold, fontSize: 17, marginTop: 10 }}>
+        <Text style={{ fontWeight: FONTS.Bold, fontSize: 16, marginTop: 10 }}>
           {name}
         </Text>
         <View
@@ -38,22 +45,22 @@ export const ProductCard = (props) => {
             marginTop: 5,
           }}
         >
-          <Text style={{ fontSize: 19, fontWeight: FONTS.Bold }}>
+          <Text style={{ fontSize: 14, fontWeight: FONTS.Bold }}>
             {price} FCFA
           </Text>
           <View
             style={{
               height: 25,
               width: 25,
-              backgroundColor: COLORS.green,
-              borderRadius: 5,
+              backgroundColor: COLORS.Crimson,
+              borderRadius: 7,
               alignItems: "center",
               justifyContent: "center",
             }}
           >
             <Text
               style={{
-                fontSize: 22,
+                fontSize: 20,
                 color: COLORS.white,
                 fontWeight: FONTS.Bold,
               }}

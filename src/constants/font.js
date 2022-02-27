@@ -1,5 +1,5 @@
 export const FONTS = {
-  Bold: "Inter-Bold",
+  Bold: "bold",
   Light: "Inter-Light-BETA",
   Regular: "Inter-Regular",
   Meduim: "Inter-Meduim",
