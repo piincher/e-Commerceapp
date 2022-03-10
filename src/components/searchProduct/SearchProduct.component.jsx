@@ -6,11 +6,7 @@ export const SearchedProduct = ({ filteredProduct }) => {
   return (
     <View>
       {filteredProduct.map((product) => {
-        return (
-          <View>
-            <List.Item title={product.name} />;
-          </View>
-        );
+        return <List.Item title={product.name} />;
       })}
     </View>
   );
