@@ -52,7 +52,7 @@ export const ProductCard = (props) => {
             style={{
               height: 25,
               width: 25,
-              backgroundColor: COLORS.Crimson,
+              backgroundColor: COLORS.Orange,
               borderRadius: 7,
               alignItems: "center",
               justifyContent: "center",

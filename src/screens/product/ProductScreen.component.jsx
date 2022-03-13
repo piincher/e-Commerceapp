@@ -36,8 +36,11 @@ const ProductScreen = () => {
         term={searchField}
         onChangeTerm={setSearchField}
         onFocus={openList}
+        onBlur={onBlur}
+        openList={openList}
+        focus={focus}
       />
-      {focus == false ? (
+      {focus === true ? (
         <SearchedProduct filteredProduct={filteredProduct} />
       ) : (
         <FlatList

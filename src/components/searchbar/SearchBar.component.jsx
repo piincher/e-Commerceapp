@@ -1,10 +1,10 @@
 import React from "react";
-import { View, StyleSheet, TextInput } from "react-native";
+import { View, StyleSheet, TextInput, TouchableOpacity } from "react-native";
 import { COLORS } from "../../constants/Colors";
 import { FONTS } from "../../constants/font";
 import { AntDesign } from "@expo/vector-icons";
 
-export const SearchBar = ({ term, onChangeTerm }) => {
+export const SearchBar = ({ term, onChangeTerm, onBlur, openList, focus }) => {
   return (
     <View style={{ marginTop: 30, flexDirection: "row" }}>
       <View style={styles.searchContainer}>
@@ -19,7 +19,18 @@ export const SearchBar = ({ term, onChangeTerm }) => {
           style={styles.input}
           onChangeText={onChangeTerm}
           value={term}
+          onPressIn={() => openList()}
         />
+        {focus ? (
+          <TouchableOpacity onPress={onBlur}>
+            <AntDesign
+              name="closecircle"
+              size={24}
+              color="black"
+              style={{ marginRight: 4 }}
+            />
+          </TouchableOpacity>
+        ) : null}
       </View>
     </View>
   );

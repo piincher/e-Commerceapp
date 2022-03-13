@@ -18,13 +18,13 @@ export const Header = () => {
             style={{
               fontSize: 26,
               fontWeight: FONTS.Bold || "500",
-              color: COLORS.Crimson,
+              color: COLORS.Orange,
             }}
           >
             My Empire By Myma
           </Text>
         </View>
-        <AntDesign name="shoppingcart" size={24} color={COLORS.Crimson} />
+        <AntDesign name="shoppingcart" size={24} color={COLORS.Orange} />
       </View>
     </>
   );

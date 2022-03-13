@@ -8,22 +8,9 @@ import {
 } from "react-native-paper";
 import { FONTS } from "./src/constants/font";
 // screens
-const theme = {
-  ...DefaultTheme,
-  fonts: configureFonts(FONTS),
-  roundness: 30,
-  colors: {
-    ...DefaultTheme.colors,
-    primary: "#41669E1",
-    accent: "#f1c40f",
-  },
-};
+
 export default function App() {
-  return (
-    <PaperProvider theme={theme}>
-      <ProductScreen />
-    </PaperProvider>
-  );
+  return <ProductScreen />;
 }
 
 const styles = StyleSheet.create({
