@@ -3,7 +3,6 @@ import { StyleSheet, Text, View, TextInput } from "react-native";
 import { COLORS } from "../../constants/Colors";
 import { FONTS } from "../../constants/font";
 import { AntDesign } from "@expo/vector-icons";
-import { SearchBar } from "../searchbar/SearchBar.component";
 
 export const Header = () => {
   return (
