@@ -1,10 +1,10 @@
 import React from "react";
-import { Text, View, Image } from "react-native";
+import { Text, View, Image, TouchableOpacity } from "react-native";
 
 import { COLORS } from "../../constants/Colors";
 export const SearchProductItem = ({ product, key }) => {
   return (
-    <View
+    <TouchableOpacity
       style={{
         flexDirection: "row",
         justifyContent: "space-between",
@@ -36,6 +36,6 @@ export const SearchProductItem = ({ product, key }) => {
       </View>
 
       <Text style={{ marginRight: 90 }}>{product.name}</Text>
-    </View>
+    </TouchableOpacity>
   );
 };

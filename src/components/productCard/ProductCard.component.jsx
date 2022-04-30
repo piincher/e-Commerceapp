@@ -77,9 +77,10 @@ export const ProductCard = (props) => {
 const styles = StyleSheet.create({
   container: {
     height: 225,
-    backgroundColor: COLORS.light,
+    backgroundColor: COLORS.Silver,
     width,
-    marginHorizontal: 2,
+    marginHorizontal: 4,
+    marginTop: 10,
     borderRadius: 10,
     marginBottom: 20,
     padding: 15,

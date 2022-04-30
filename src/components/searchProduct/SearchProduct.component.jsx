@@ -1,6 +1,7 @@
 import React from "react";
-import { View } from "react-native";
-import { List, Text } from "react-native-paper";
+import { View, Text } from "react-native";
+import { COLORS } from "../../constants/Colors";
+
 import { SearchProductItem } from "../searchProductItem/SearchProductItem.component";
 
 export const SearchedProduct = ({ filteredProduct }) => {
@@ -9,13 +10,15 @@ export const SearchedProduct = ({ filteredProduct }) => {
       {filteredProduct.length > 0 ? (
         filteredProduct.map((product) => {
           return (
-            <View key={product.id}>
+            <View key={product._id}>
               <SearchProductItem product={product} />
             </View>
           );
         })
       ) : (
-        <Text>desole nous avons pas cet produit</Text>
+        <Text style={{ textAlign: "center", fontSize: 24, color: COLORS.red }}>
+          desole nous n'avons pas cet produit
+        </Text>
       )}
     </View>
   );
