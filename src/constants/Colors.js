@@ -7,4 +7,5 @@ export const COLORS = {
   Crimson: "#e40578",
   Orange: "#e08700",
   Silver: "#e8eff5",
+  Blue: "blue",
 };

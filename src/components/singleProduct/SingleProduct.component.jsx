@@ -1,8 +1,10 @@
+import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { Text, View, Image, TouchableOpacity } from "react-native";
 
 import { COLORS } from "../../constants/Colors";
-export const SearchProductItem = ({ product, key }) => {
+export const SingleProduct = ({ item, searchScreen }) => {
+  const navigation = useNavigation();
   return (
     <TouchableOpacity
       style={{
@@ -11,7 +13,9 @@ export const SearchProductItem = ({ product, key }) => {
         marginVertical: 5,
         marginHorizontal: 6,
       }}
-      key={key}
+      onPress={() =>
+        searchScreen && navigation.navigate("productDetail", { item })
+      }
     >
       <View
         style={{
@@ -27,15 +31,17 @@ export const SearchProductItem = ({ product, key }) => {
       >
         <Image
           source={{
-            uri: product.image
-              ? product.image
+            uri: item.image
+              ? item.image
               : "https://cdn.pixabay.com/photo/2012/04/01/17/29/box-23649_960_720.png",
           }}
           style={{ width: 50, height: 40 }}
         />
       </View>
 
-      <Text style={{ marginRight: 90 }}>{product.name}</Text>
+      <Text style={{ marginRight: 90 }}>{item.name}</Text>
+
+      {!searchScreen && <Text>{item.price} fcfa</Text>}
     </TouchableOpacity>
   );
 };

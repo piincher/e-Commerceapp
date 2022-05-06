@@ -10,20 +10,41 @@ import {
 } from "react-native";
 import { COLORS } from "../../constants/Colors";
 import { FONTS } from "../../constants/font";
+import { useNavigation } from "@react-navigation/native";
+import { useDispatch, useSelector } from "react-redux";
+import { addtoCart } from "../../redux/reducers/cartItems";
 
 const width = Dimensions.get("screen").width / 2 - 30;
 
 export const ProductCard = (props) => {
-  const { name, price, image, countInStock } = props;
+  const { cartItems } = useSelector((state) => state.cartItems);
+  const dispatch = useDispatch();
+
+  console.log(cartItems);
+  const navigation = useNavigation();
+  const {
+    name,
+    price,
+    image,
+    countInStock,
+    category: { $oid },
+  } = props;
+  console.log($oid);
+  const addTocart = (product) => {
+    dispatch(addtoCart(product));
+  };
+
+  const item = { name, price, image, countInStock, $oid };
   return (
-    <TouchableOpacity activeOpacity={0.5}>
+    <View activeOpacity={0.5}>
       <View style={styles.container}>
-        <View
+        <TouchableOpacity
           style={{
             height: 100,
             alignItems: "center",
             justifyContent: "center",
           }}
+          onPress={() => navigation.navigate("productDetail", { item })}
         >
           <Image
             resizeMode="contain"
@@ -34,7 +55,7 @@ export const ProductCard = (props) => {
                 : "https://cdn.pixabay.com/photo/2012/04/01/17/29/box-23649_960_720.png",
             }}
           />
-        </View>
+        </TouchableOpacity>
         <Text style={{ fontWeight: FONTS.Bold, fontSize: 16, marginTop: 10 }}>
           {name}
         </Text>
@@ -48,7 +69,7 @@ export const ProductCard = (props) => {
           <Text style={{ fontSize: 14, fontWeight: FONTS.Bold }}>
             {price} FCFA
           </Text>
-          <View
+          <TouchableOpacity
             style={{
               height: 25,
               width: 25,
@@ -57,6 +78,7 @@ export const ProductCard = (props) => {
               alignItems: "center",
               justifyContent: "center",
             }}
+            onPress={() => addTocart(item)}
           >
             <Text
               style={{
@@ -67,10 +89,10 @@ export const ProductCard = (props) => {
             >
               +
             </Text>
-          </View>
+          </TouchableOpacity>
         </View>
       </View>
-    </TouchableOpacity>
+    </View>
   );
 };
 

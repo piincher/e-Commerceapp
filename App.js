@@ -1,18 +1,21 @@
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
-import { StyleSheet, Text, View } from "react-native";
-
-import ProductScreen from "./src/screens/product/ProductScreen.component";
+import { StyleSheet } from "react-native";
 
 import { COLORS } from "./src/constants/Colors";
 
 import { Main } from "./src/navigations/Route";
+import { store } from "./src/redux/store";
+
+import { Provider } from "react-redux";
 // screens
 
 export default function App() {
   return (
     <NavigationContainer>
-      <Main />
+      <Provider store={store}>
+        <Main />
+      </Provider>
     </NavigationContainer>
   );
 }

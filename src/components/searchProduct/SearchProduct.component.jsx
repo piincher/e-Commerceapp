@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text } from "react-native";
 import { COLORS } from "../../constants/Colors";
 
-import { SearchProductItem } from "../searchProductItem/SearchProductItem.component";
+import { SingleProduct } from "../singleProduct/SingleProduct.component";
 
 export const SearchedProduct = ({ filteredProduct }) => {
   return (
@@ -11,7 +11,7 @@ export const SearchedProduct = ({ filteredProduct }) => {
         filteredProduct.map((product) => {
           return (
             <View key={product._id}>
-              <SearchProductItem product={product} />
+              <SingleProduct item={product} searchScreen={true} />
             </View>
           );
         })

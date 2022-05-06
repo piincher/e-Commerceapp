@@ -11,7 +11,7 @@ export const Header = () => {
         <View>
           <Text style={{ fontSize: 20, fontWeight: FONTS.Bold }}>
             {" "}
-            Bienvenue chez{" "}
+            Bienvenue chez
           </Text>
           <Text
             style={{
@@ -34,5 +34,6 @@ const styles = StyleSheet.create({
     marginTop: 35,
     flexDirection: "row",
     justifyContent: "space-between",
+    marginHorizontal: 12,
   },
 });
