@@ -1,21 +1,27 @@
-import React from "react";
-import { NavigationContainer } from "@react-navigation/native";
-import { StyleSheet,View } from "react-native";
-import { Ionicons, AntDesign } from "@expo/vector-icons";
-import { COLORS } from "./src/constants/Colors";
-import { store } from "./src/redux/store";
-import OnboardingScreen from "./src/screens/onBoarding/OnBoarding.component";
-import { Provider } from "react-redux";
+import { AntDesign, Ionicons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { createStackNavigator } from "@react-navigation/stack";
-import AdminScreen from "./src/screens/admin/AdminScreen.component";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-
-import { CartIcon } from './src/components/cartIcon/CartIcon.component' 
+import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import React from "react";
+import { View } from "react-native";
+import { Provider } from "react-redux";
+import { store } from "./src/redux/store";
+import { NativeBaseProvider } from "native-base";
+import { CartIcon } from "./src/components/cartIcon/CartIcon.component";
 // screens
 import Cart from "./src/screens/cart/Cart.component";
+import Checkout from "./src/screens/checkOut/CheckOut";
 import ProductScreen from "./src/screens/product/ProductScreen.component";
+import AdminScreen from "./src/screens/admin/AdminScreen.component";
+import OnboardingScreen from "./src/screens/onBoarding/OnBoarding.component";
+import ProductDetails from "./src/screens/productDetails/ProductDetails.component";
+import Payment from "./src/screens/payment/Payment";
+import Confirm from "./src/screens/Confirm/Confirm";
+
 const Tab = createBottomTabNavigator();
+const TabHeader = createMaterialTopTabNavigator();
 const Stack = createStackNavigator();
 export default function App() {
   const [isAppFirstLaunched, setIsAppFirstLaunched] = React.useState(null);
@@ -32,33 +38,36 @@ export default function App() {
     AsyncStorage.removeItem("isAppFirstLaunched");
   }, []);
 
- 
-
   return (
     isAppFirstLaunched !== null && (
       <NavigationContainer>
         <Provider store={store}>
           <Stack.Navigator screenOptions={{ headerShown: false }}>
             {isAppFirstLaunched && (
-              <Stack.Screen
-                name="first"
-                component={OnboardingScreen}
-              />
+              <Stack.Screen name="first" component={OnboardingScreen} />
             )}
-          <Stack.Screen name="HomeSection" component={BottomNavigation}/>
+            <Stack.Screen name="HomeSection" component={BottomNavigation} />
+            <Stack.Screen name="checkout" component={HeaderTabNavigation} />
+            <Stack.Screen name="productDetail" component={ProductDetails} />
           </Stack.Navigator>
-         
         </Provider>
       </NavigationContainer>
     )
   );
 }
 
-
-
+// header tab navigator for checkout
+const HeaderTabNavigation = () => {
+  return (
+    <TabHeader.Navigator>
+      <Tab.Screen name="Payment" component={Payment} />
+      <Tab.Screen name="Confirm" component={Confirm} />
+    </TabHeader.Navigator>
+  );
+};
 
 //bottom tab navigator
- const BottomNavigation = () => {
+const BottomNavigation = () => {
   return (
     <Tab.Navigator
       initialRouteName="Home"
@@ -100,4 +109,3 @@ export default function App() {
     </Tab.Navigator>
   );
 };
-

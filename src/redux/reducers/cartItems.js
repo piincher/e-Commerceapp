@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-
+import _ from "lodash";
 const addItemToCart = (cartItems, cartItemToAdd) => {
   const existingCartItem = cartItems.find(
     (cartItem) => cartItem.id === cartItemToAdd.id
@@ -23,8 +23,17 @@ const cartItemsSlice = createSlice({
   initialState: initialState,
   reducers: {
     addtoCart: (state, { payload }) => {
-      let tempProductItem = { ...payload, cartQuantity: 1 };
-      state.cartItems.push(tempProductItem);
+      const { $oid } = payload;
+      state.cartItems.push({ ...payload, count: 1 });
+      let unique = _.uniqWith(state.cartItems, _.isEqual);
+      state.cartItems = unique;
+
+      console.log("cart with loadash", state.cartItems);
+
+      // state.cartItems.push(payload);
+      // let unique = _.uniqWith(state.cartItems, _.isEqual);
+      // state.cartItems = unique;
+      // console.log("cart with loadash", state.cartItems);
     },
     removeFromCart: (state, { payload }) => {
       return state.cartItems.filter((cartItem) => cartItem !== payload);

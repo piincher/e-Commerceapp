@@ -13,14 +13,14 @@ import { FONTS } from "../../constants/font";
 import { useNavigation } from "@react-navigation/native";
 import { useDispatch, useSelector } from "react-redux";
 import { addtoCart } from "../../redux/reducers/cartItems";
-
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import _ from "lodash";
 const width = Dimensions.get("screen").width / 2 - 30;
 
 export const ProductCard = (props) => {
   const { cartItems } = useSelector((state) => state.cartItems);
   const dispatch = useDispatch();
 
-  console.log(cartItems);
   const navigation = useNavigation();
   const {
     name,
@@ -29,12 +29,20 @@ export const ProductCard = (props) => {
     countInStock,
     category: { $oid },
   } = props;
-  console.log($oid);
-  const addTocart = (product) => {
-    dispatch(addtoCart(product));
-  };
 
   const item = { name, price, image, countInStock, $oid };
+
+  const addTocart = async () => {
+    // dispatch(addtoCart(product));
+    // let cart = [];
+    // cart.push({
+    //   ...item,
+    //   count: 1,
+    // });
+    // let unique = _.uniqWith(cart, _.isEqual);
+    // await AsyncStorage.setItem("cart", JSON.stringify(unique));
+  };
+
   return (
     <View activeOpacity={0.5}>
       <View style={styles.container}>
@@ -78,7 +86,7 @@ export const ProductCard = (props) => {
               alignItems: "center",
               justifyContent: "center",
             }}
-            onPress={() => addTocart(item)}
+            onPress={() => dispatch(addtoCart(item))}
           >
             <Text
               style={{

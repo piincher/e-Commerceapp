@@ -15,7 +15,8 @@ import { ProductList } from "../../components/productList/ProductList.component"
 import { SearchBar } from "../../components/searchbar/SearchBar.component";
 import { SearchedProduct } from "../../components/searchProduct/SearchProduct.component";
 import { COLORS } from "../../constants/Colors";
-
+import { baseUrl } from "../../constants/baseUrl";
+import axios from "axios";
 const data = require("../../constants/product.json");
 const categoriesData = require("../../constants/categories.json");
 
@@ -34,11 +35,17 @@ const ProductScreen = () => {
   );
 
   useEffect(() => {
-    setProducts(data);
-    setCategories(categoriesData);
-    setProductCtg(data);
-    setActive(-1);
-    setInitialState(data);
+    const getData = async () => {
+      const res = await axios.get(`${baseUrl}products`);
+      console.log("res", res.data);
+      setProducts(res.data);
+      setCategories(res.data);
+      setProductCtg(res.data);
+      setActive(-1);
+      setInitialState(res.data);
+    };
+
+    getData();
     return () => {
       setProducts([]);
       setCategories([]);
@@ -47,7 +54,6 @@ const ProductScreen = () => {
       setInitialState([]);
     };
   }, []);
-  console.log(categories);
 
   const openList = () => {
     setFocus(true);
@@ -98,7 +104,11 @@ const ProductScreen = () => {
           {productCtg.length > 0 ? (
             <View style={styles.listContainer}>
               {productCtg.map((item) => {
-                return <ProductList key={item._id.$oid} item={item} />;
+                return (
+                  <React.Fragment key={item._id.$oid}>
+                    <ProductList item={item} />
+                  </React.Fragment>
+                );
               })}
               {/* <FlatList
                 showsHorizontalScrollIndicator={false}

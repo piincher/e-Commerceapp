@@ -1,3 +1,4 @@
+import React from "react";
 import react, { useState, useEffect } from "react";
 import {
   Text,
@@ -37,12 +38,14 @@ export const Banner = () => {
           >
             {banner.map((item) => {
               return (
-                <Image
-                  key={item}
-                  source={{ uri: item }}
-                  resizeMode="contain"
-                  style={styles.imageContainer}
-                />
+                <React.Fragment key={item}>
+                  <Image
+                    key={item}
+                    source={{ uri: item }}
+                    resizeMode="contain"
+                    style={styles.imageContainer}
+                  />
+                </React.Fragment>
               );
             })}
           </Swiper>

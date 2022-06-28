@@ -3,7 +3,7 @@ import { View, StyleSheet } from "react-native";
 import { Ionicons, AntDesign } from "@expo/vector-icons";
 import { COLORS } from "../../constants/Colors";
 
-export const RegularHeader = ({ iconRight }) => {
+export const RegularHeader = ({ iconRight, navigation }) => {
   return (
     <View style={styles.header}>
       <Ionicons

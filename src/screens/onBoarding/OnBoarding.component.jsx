@@ -18,19 +18,19 @@ const COLORS = { primary: "#282534", white: "#fff" };
 const slides = [
   {
     id: "1",
-    image: require("../../../assets/image1.png"),
+    image: require("../../../assets/1.jpg"),
     title: "Myma express votre satisfaction......",
     subtitle: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
   },
   {
     id: "2",
-    image: require("../../../assets/image2.png"),
+    image: require("../../../assets/2.jpg"),
     title: "Myma express votre satisfaction......",
     subtitle: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
   },
   {
     id: "3",
-    image: require("../../../assets/image3.png"),
+    image: require("../../../assets/3.jpg"),
     title: "Myma express votre satisfaction......",
     subtitle: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
   },

@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Image } from "react-native";
+import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -7,10 +7,10 @@ import { RegularHeader } from "../../components/regularHeader/RegularHeader.comp
 
 const ProductDetails = ({ route, navigation }) => {
   const item = route.params.item;
-  console.log(item.image);
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
-      <RegularHeader iconRight="shoppingcart" />
+      <RegularHeader iconRight="shoppingcart" navigation={navigation} />
       <View
         style={{
           height: 100,
@@ -108,7 +108,10 @@ const ProductDetails = ({ route, navigation }) => {
               </View>
             </View>
 
-            <View style={styles.buyBtn}>
+            <TouchableOpacity
+              style={styles.buyBtn}
+              onPress={() => navigation.navigate("checkout", { item })}
+            >
               <Text
                 style={{
                   color: COLORS.white,
@@ -118,7 +121,7 @@ const ProductDetails = ({ route, navigation }) => {
               >
                 Acheter
               </Text>
-            </View>
+            </TouchableOpacity>
           </View>
         </View>
       </View>

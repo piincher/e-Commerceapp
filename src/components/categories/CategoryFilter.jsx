@@ -1,5 +1,11 @@
 import React from "react";
-import { View, TouchableOpacity, Text, StyleSheet } from "react-native";
+import {
+  View,
+  TouchableOpacity,
+  Text,
+  StyleSheet,
+  ScrollView,
+} from "react-native";
 import { COLORS } from "../../constants/Colors";
 
 export const CategoryFilter = ({
@@ -9,7 +15,7 @@ export const CategoryFilter = ({
   categoriesFilter,
 }) => {
   return (
-    <View style={styles.categoryContainer}>
+    <ScrollView horizontal showsHorizontalScrollIndicator={false}>
       <TouchableOpacity
         onPress={() => {
           categoriesFilter("all");
@@ -29,6 +35,7 @@ export const CategoryFilter = ({
               categoriesFilter(item._id.$oid);
               setActive(categories.indexOf(item));
             }}
+            key={item._id.$oid}
           >
             <Text
               style={
@@ -42,7 +49,7 @@ export const CategoryFilter = ({
           </TouchableOpacity>
         );
       })}
-    </View>
+    </ScrollView>
   );
 };
 const styles = StyleSheet.create({
@@ -56,6 +63,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "grey",
     fontWeight: "bold",
+    marginHorizontal: 12,
   },
   categoryTextSelect: {
     color: COLORS.Orange,
