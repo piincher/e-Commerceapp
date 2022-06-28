@@ -16,9 +16,8 @@ import { SearchBar } from "../../components/searchbar/SearchBar.component";
 import { SearchedProduct } from "../../components/searchProduct/SearchProduct.component";
 import { COLORS } from "../../constants/Colors";
 import { baseUrl } from "../../constants/baseUrl";
+
 import axios from "axios";
-const data = require("../../constants/product.json");
-const categoriesData = require("../../constants/categories.json");
 
 const { height } = Dimensions.get("window");
 const ProductScreen = () => {
@@ -35,17 +34,23 @@ const ProductScreen = () => {
   );
 
   useEffect(() => {
-    const getData = async () => {
+    const getProducts = async () => {
       const res = await axios.get(`${baseUrl}products`);
       console.log("res", res.data);
       setProducts(res.data);
-      setCategories(res.data);
       setProductCtg(res.data);
       setActive(-1);
       setInitialState(res.data);
     };
 
-    getData();
+    const getCategories = async () => {
+      const res = await axios.get(`${baseUrl}categories`);
+      console.log("categories", res.data);
+      setCategories(res.data);
+    };
+
+    getProducts();
+    getCategories();
     return () => {
       setProducts([]);
       setCategories([]);
@@ -67,7 +72,7 @@ const ProductScreen = () => {
         ? [setProductCtg(initialState), setActive(true)]
         : [
             setProductCtg(
-              products.filter((i) => i.category.$oid === ctg),
+              products.filter((i) => i.category.id === ctg),
               setActive(true)
             ),
           ];

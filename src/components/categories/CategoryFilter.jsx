@@ -32,7 +32,7 @@ export const CategoryFilter = ({
         return (
           <TouchableOpacity
             onPress={() => {
-              categoriesFilter(item._id.$oid);
+              categoriesFilter(item.id);
               setActive(categories.indexOf(item));
             }}
             key={item._id.$oid}
