@@ -11,7 +11,7 @@ import { ProductCard } from "../productCard/ProductCard.component";
 export const ProductList = ({ item, key }) => {
   return (
     <>
-      <ProductCard {...item} />
+    <ProductCard {...item} />
     </>
   );
 };
