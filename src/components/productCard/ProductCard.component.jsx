@@ -1,5 +1,5 @@
 import React from "react";
-
+import Toast from "react-native-toast-message";
 import {
   Text,
   View,
@@ -86,7 +86,15 @@ export const ProductCard = (props) => {
               alignItems: "center",
               justifyContent: "center",
             }}
-            onPress={() => dispatch(addtoCart(item))}
+            onPress={() => {
+              dispatch(addtoCart(item));
+              Toast.show({
+                topOffset: 60,
+                type: "success",
+                text1: `${name}ajouté au panier`,
+                text2: "Accédez à votre panier pour finaliser la commande",
+              });
+            }}
           >
             <Text
               style={{

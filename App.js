@@ -1,4 +1,5 @@
 import { AntDesign, Ionicons } from "@expo/vector-icons";
+import Toast from "react-native-toast-message";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
@@ -19,6 +20,8 @@ import OnboardingScreen from "./src/screens/onBoarding/OnBoarding.component";
 import ProductDetails from "./src/screens/productDetails/ProductDetails.component";
 import Payment from "./src/screens/payment/Payment";
 import Confirm from "./src/screens/Confirm/Confirm";
+import Login from "./src/screens/Login/Login.component";
+import Register from "./src/screens/Register/Register.component";
 
 const Tab = createBottomTabNavigator();
 const TabHeader = createMaterialTopTabNavigator();
@@ -49,8 +52,10 @@ export default function App() {
             <Stack.Screen name="HomeSection" component={BottomNavigation} />
             <Stack.Screen name="checkout" component={HeaderTabNavigation} />
             <Stack.Screen name="productDetail" component={ProductDetails} />
+            <Stack.Screen name="Register" component={Register} />
           </Stack.Navigator>
         </Provider>
+        <Toast ref={(ref) => Toast.setRef(ref)} />
       </NavigationContainer>
     )
   );
@@ -105,7 +110,7 @@ const BottomNavigation = () => {
       <Tab.Screen name="Home" component={ProductScreen} />
       <Tab.Screen name="cart" component={Cart} />
       <Tab.Screen name="admin" component={AdminScreen} />
-      <Tab.Screen name="user" component={AdminScreen} />
+      <Tab.Screen name="Login" component={Login} />
     </Tab.Navigator>
   );
 };

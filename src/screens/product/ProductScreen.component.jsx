@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
+import { useFocusEffect } from "@react-navigation/native";
+
 import {
   FlatList,
   SafeAreaView,
@@ -7,6 +9,7 @@ import {
   Text,
   StyleSheet,
   Dimensions,
+  ActivityIndicator,
 } from "react-native";
 import { Banner } from "../../components/Banner/Banner.component";
 import { CategoryFilter } from "../../components/categories/CategoryFilter";
@@ -18,6 +21,7 @@ import { COLORS } from "../../constants/Colors";
 import { baseUrl } from "../../constants/baseUrl";
 
 import axios from "axios";
+import { Container } from "native-base";
 
 const { height } = Dimensions.get("window");
 const ProductScreen = () => {
@@ -26,39 +30,43 @@ const ProductScreen = () => {
   const [focus, setFocus] = useState(false);
   const [categories, setCategories] = useState([]);
   const [productCtg, setProductCtg] = useState([]);
-
+  const [loading, setLoading] = useState(false);
   const [active, setActive] = useState();
   const [initialState, setInitialState] = useState([]);
   const filteredProduct = products.filter((product) =>
     product.name.toLowerCase().includes(searchField.toLowerCase())
   );
 
-  useEffect(() => {
-    const getProducts = async () => {
-      const res = await axios.get(`${baseUrl}products`);
-      console.log("res", res.data);
-      setProducts(res.data);
-      setProductCtg(res.data);
-      setActive(-1);
-      setInitialState(res.data);
-    };
+  useFocusEffect(
+    useCallback(() => {
+      const getProducts = async () => {
+        setLoading(true);
+        const res = await axios.get(`${baseUrl}products`);
+        console.log("res", res.data);
+        setProducts(res.data);
+        setProductCtg(res.data);
+        setActive(-1);
+        setInitialState(res.data);
+        setLoading(false);
+      };
 
-    const getCategories = async () => {
-      const res = await axios.get(`${baseUrl}categories`);
-      console.log("categories", res.data);
-      setCategories(res.data);
-    };
+      const getCategories = async () => {
+        const res = await axios.get(`${baseUrl}categories`);
+        console.log("categories", res.data);
+        setCategories(res.data);
+      };
 
-    getProducts();
-    getCategories();
-    return () => {
-      setProducts([]);
-      setCategories([]);
-      setFocus(false);
-      setActive();
-      setInitialState([]);
-    };
-  }, []);
+      getProducts();
+      getCategories();
+      return () => {
+        setProducts([]);
+        setCategories([]);
+        setFocus(false);
+        setActive();
+        setInitialState([]);
+      };
+    }, [])
+  );
 
   const openList = () => {
     setFocus(true);
@@ -79,43 +87,53 @@ const ProductScreen = () => {
     }
   };
   return (
-    <ScrollView
-      style={{ flex: 1, backgroundColor: COLORS.white, paddingHorizontal: 20 }}
-    >
-      <Header />
-      <SearchBar
-        term={searchField}
-        onChangeTerm={setSearchField}
-        onFocus={openList}
-        onBlur={onBlur}
-        openList={openList}
-        focus={focus}
-      />
-      {focus === true ? (
-        <SearchedProduct filteredProduct={filteredProduct} />
+    <>
+      {loading ? (
+        <Container style={[styles.center, { backgroundColor: "#f2f2f2" }]}>
+          <ActivityIndicator size="large" color="red" />
+        </Container>
       ) : (
-        <>
-          <>
-            <Banner />
-            <CategoryFilter
-              categories={categories}
-              categoriesFilter={changeCategory}
-              productCtg={productCtg}
-              active={active}
-              setActive={setActive}
-            />
-          </>
+        <ScrollView
+          style={{
+            flex: 1,
+            backgroundColor: COLORS.white,
+            paddingHorizontal: 20,
+          }}
+        >
+          {/* <Header /> */}
+          <SearchBar
+            term={searchField}
+            onChangeTerm={setSearchField}
+            onFocus={openList}
+            onBlur={onBlur}
+            openList={openList}
+            focus={focus}
+          />
+          {focus === true ? (
+            <SearchedProduct filteredProduct={filteredProduct} />
+          ) : (
+            <>
+              <>
+                <Banner />
+                <CategoryFilter
+                  categories={categories}
+                  categoriesFilter={changeCategory}
+                  productCtg={productCtg}
+                  active={active}
+                  setActive={setActive}
+                />
+              </>
 
-          {productCtg.length > 0 ? (
-            <View style={styles.listContainer}>
-              {productCtg.map((item) => {
-                return (
-                  <React.Fragment key={item._id.$oid}>
-                    <ProductList item={item} />
-                  </React.Fragment>
-                );
-              })}
-              {/* <FlatList
+              {productCtg.length > 0 ? (
+                <View style={styles.listContainer}>
+                  {productCtg.map((item) => {
+                    return (
+                      <React.Fragment key={item._id.$oid}>
+                        <ProductList item={item} />
+                      </React.Fragment>
+                    );
+                  })}
+                  {/* <FlatList
                 showsHorizontalScrollIndicator={false}
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={{
@@ -130,15 +148,17 @@ const ProductScreen = () => {
                   return <ProductList item={item} key={item.id} />;
                 }}
               /> */}
-            </View>
-          ) : (
-            <View style={[styles.center]}>
-              <Text style={styles.textContainer}>pas de produit</Text>
-            </View>
+                </View>
+              ) : (
+                <View style={[styles.center]}>
+                  <Text style={styles.textContainer}>pas de produit</Text>
+                </View>
+              )}
+            </>
           )}
-        </>
+        </ScrollView>
       )}
-    </ScrollView>
+    </>
   );
 };
 
