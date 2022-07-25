@@ -22,11 +22,13 @@ import Payment from "./src/screens/payment/Payment";
 import Confirm from "./src/screens/Confirm/Confirm";
 import Login from "./src/screens/Login/Login.component";
 import Register from "./src/screens/Register/Register.component";
-
+import Profile from "./src/screens/profile/Profile.component";
+import { useSelector } from "react-redux";
 const Tab = createBottomTabNavigator();
 const TabHeader = createMaterialTopTabNavigator();
 const Stack = createStackNavigator();
-export default function App() {
+
+function AppWrapper() {
   const [isAppFirstLaunched, setIsAppFirstLaunched] = React.useState(null);
 
   React.useEffect(async () => {
@@ -44,17 +46,17 @@ export default function App() {
   return (
     isAppFirstLaunched !== null && (
       <NavigationContainer>
-        <Provider store={store}>
-          <Stack.Navigator screenOptions={{ headerShown: false }}>
-            {isAppFirstLaunched && (
-              <Stack.Screen name="first" component={OnboardingScreen} />
-            )}
-            <Stack.Screen name="HomeSection" component={BottomNavigation} />
-            <Stack.Screen name="checkout" component={HeaderTabNavigation} />
-            <Stack.Screen name="productDetail" component={ProductDetails} />
-            <Stack.Screen name="Register" component={Register} />
-          </Stack.Navigator>
-        </Provider>
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
+          {isAppFirstLaunched && (
+            <Stack.Screen name="first" component={OnboardingScreen} />
+          )}
+          <Stack.Screen name="HomeSection" component={BottomNavigation} />
+          <Stack.Screen name="checkout" component={HeaderTabNavigation} />
+          <Stack.Screen name="productDetail" component={ProductDetails} />
+          <Stack.Screen name="Register" component={Register} />
+          <Stack.Screen name="profile" component={Profile} />
+        </Stack.Navigator>
+
         <Toast ref={(ref) => Toast.setRef(ref)} />
       </NavigationContainer>
     )
@@ -73,6 +75,9 @@ const HeaderTabNavigation = () => {
 
 //bottom tab navigator
 const BottomNavigation = () => {
+  const { token, userInfo } = useSelector((state) => state.user);
+  console.log("user", userInfo.user.isAdmin);
+  const admin = userInfo.user.isAdmin;
   return (
     <Tab.Navigator
       initialRouteName="Home"
@@ -80,13 +85,13 @@ const BottomNavigation = () => {
         tabBarIcon: ({ color, size }) => {
           let iconName;
 
-          if (route.name === "Home") {
+          if (route.name === "Accueil") {
             iconName = "home";
           } else if (route.name === "cart") {
             iconName = "cart";
           } else if (route.name === "admin") {
             iconName = "cog";
-          } else if (route.name === "user") {
+          } else if (route.name === "Utilisateur") {
             iconName = "user";
           }
 
@@ -107,10 +112,21 @@ const BottomNavigation = () => {
         headerShown: false,
       })}
     >
-      <Tab.Screen name="Home" component={ProductScreen} />
+      <Tab.Screen name="Accueil" component={ProductScreen} />
       <Tab.Screen name="cart" component={Cart} />
-      <Tab.Screen name="admin" component={AdminScreen} />
-      <Tab.Screen name="Login" component={Login} />
+      {!admin ? <Tab.Screen name="admin" component={AdminScreen} /> : null}
+      <Tab.Screen name="Utilisateur" component={Login} />
     </Tab.Navigator>
   );
 };
+
+const App = () => {
+  // const store = createStore(rootReducer);
+
+  return (
+    <Provider store={store}>
+      <AppWrapper />
+    </Provider>
+  );
+};
+export default App;
