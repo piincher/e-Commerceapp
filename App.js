@@ -24,6 +24,8 @@ import Login from "./src/screens/Login/Login.component";
 import Register from "./src/screens/Register/Register.component";
 import Profile from "./src/screens/profile/Profile.component";
 import { useSelector } from "react-redux";
+import CreateProduct from "./src/screens/adminProduct/adminCreateProduct.component";
+import Categories from "./src/screens/categories/Categories.component";
 const Tab = createBottomTabNavigator();
 const TabHeader = createMaterialTopTabNavigator();
 const Stack = createStackNavigator();
@@ -55,6 +57,8 @@ function AppWrapper() {
           <Stack.Screen name="productDetail" component={ProductDetails} />
           <Stack.Screen name="Register" component={Register} />
           <Stack.Screen name="profile" component={Profile} />
+          <Stack.Screen name="createProduct" component={CreateProduct} />
+          <Stack.Screen name="Categories" component={Categories} />
         </Stack.Navigator>
 
         <Toast ref={(ref) => Toast.setRef(ref)} />
@@ -76,8 +80,12 @@ const HeaderTabNavigation = () => {
 //bottom tab navigator
 const BottomNavigation = () => {
   const { token, userInfo } = useSelector((state) => state.user);
-  console.log("user", userInfo.user.isAdmin);
-  const admin = userInfo.user.isAdmin;
+  console.log("userbotto", userInfo);
+  if (!userInfo) {
+    return null;
+  }
+
+  const admin = userInfo;
   return (
     <Tab.Navigator
       initialRouteName="Home"
@@ -99,10 +107,10 @@ const BottomNavigation = () => {
           return iconName === "user" ? (
             <AntDesign name="user" size={24} color="black" />
           ) : iconName === "cart" ? (
-            <View>
+            <>
               <CartIcon />
               <Ionicons name={iconName} size={size} color={color} />
-            </View>
+            </>
           ) : (
             <Ionicons name={iconName} size={size} color={color} />
           );
@@ -114,7 +122,9 @@ const BottomNavigation = () => {
     >
       <Tab.Screen name="Accueil" component={ProductScreen} />
       <Tab.Screen name="cart" component={Cart} />
-      {!admin ? <Tab.Screen name="admin" component={AdminScreen} /> : null}
+      {!admin?.user?.isAdmin ? (
+        <Tab.Screen name="admin" component={AdminScreen} />
+      ) : null}
       <Tab.Screen name="Utilisateur" component={Login} />
     </Tab.Navigator>
   );

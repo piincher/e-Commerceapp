@@ -66,7 +66,7 @@ const ListItem = (props) => {
       </Modal>
       <TouchableOpacity
         onPress={() => {
-          props.navigation.navigate("Product Detail", { item: props });
+          props.navigation.navigate("createProduct", { item: props });
         }}
         onLongPress={() => setModalVisible(true)}
         style={[

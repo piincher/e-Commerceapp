@@ -39,8 +39,8 @@ const ListHeader = () => {
 };
 
 const AdminScreen = (props) => {
-  const [productList, setProductList] = useState();
-  const [productFilter, setProductFilter] = useState();
+  const [productList, setProductList] = useState([]);
+  const [productFilter, setProductFilter] = useState([]);
   const [loading, setLoading] = useState(true);
   const [token, setToken] = useState();
 
@@ -104,7 +104,7 @@ const AdminScreen = (props) => {
         <EasyButton
           secondary
           medium
-          onPress={() => props.navigation.navigate("ProductForm")}
+          onPress={() => props.navigation.navigate("createProduct")}
         >
           <AntDesign name="search" size={24} />
           <Text style={styles.buttonText}>Products</Text>
