@@ -1,10 +1,11 @@
 import React from "react";
-import { Text, View, StyleSheet } from "react-native";
+import { Text, View, StyleSheet, Image } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useDispatch, useSelector } from "react-redux";
 import { SingleProduct } from "../../components/singleProduct/SingleProduct.component";
 import { COLORS } from "../../constants/Colors";
+import { Images } from "../../constants/icon";
 import { clearCart } from "../../redux/reducers/cartItems";
 const Cart = ({ navigation }) => {
   const { cartItems } = useSelector((state) => state.cartItems);
@@ -27,12 +28,26 @@ const Cart = ({ navigation }) => {
     <SafeAreaView
       style={{ flex: 1, backgroundColor: COLORS.white, marginTop: 20 }}
     >
-      <Text style={{ textAlign: "center", fontSize: 26 }}>LOGO</Text>
+      <View
+        style={{
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <Image
+          source={Images.logo}
+          style={{
+            width: 100,
+            height: 100,
+          }}
+        />
+      </View>
       {cartItems.length > 0 ? (
         cartItems.map((product) => {
-          console.log("cart producrt1", product);
+          console.log("product loop", product);
+
           return (
-            <View key={product.$oid}>
+            <View key={product.id}>
               <SingleProduct item={product} searchScreen={false} />
             </View>
           );
@@ -77,7 +92,7 @@ const styles = StyleSheet.create({
   textContainer: {
     marginHorizontal: 35,
     fontSize: 18,
-    color: COLORS.Blue,
+    color: COLORS.Crimson,
   },
   price: {
     color: COLORS.Orange,

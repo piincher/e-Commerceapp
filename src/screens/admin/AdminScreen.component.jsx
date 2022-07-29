@@ -10,7 +10,7 @@ import {
 import { Header, Item, Input } from "native-base";
 import { useFocusEffect } from "@react-navigation/native";
 import ListItem from "./helpers/ListItem";
-import { AntDesign, Ionicons } from "@expo/vector-icons";
+import { AntDesign, SimpleLineIcons } from "@expo/vector-icons";
 import axios from "axios";
 import { baseUrl } from "../../constants/baseUrl";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -94,34 +94,34 @@ const AdminScreen = (props) => {
     <View style={styles.container}>
       <View style={styles.buttonContainer}>
         <EasyButton
-          secondary
+          primary
           medium
           onPress={() => props.navigation.navigate("Orders")}
         >
-          <AntDesign name="search" size={24} />
-          <Text style={styles.buttonText}>Orders</Text>
+          <SimpleLineIcons name="basket" size={24} color="black" />
+          <Text style={styles.buttonText}>Commande</Text>
         </EasyButton>
         <EasyButton
-          secondary
+          danger
           medium
           onPress={() => props.navigation.navigate("createProduct")}
         >
-          <AntDesign name="search" size={24} />
-          <Text style={styles.buttonText}>Products</Text>
+          <AntDesign name="pluscircleo" size={24} color="black" />
+          <Text style={styles.buttonText}>Produits</Text>
         </EasyButton>
         <EasyButton
           secondary
           medium
           onPress={() => props.navigation.navigate("Categories")}
         >
-          <AntDesign name="search" size={24} />
+          <AntDesign name="pluscircleo" size={24} color="black" />
           <Text style={styles.buttonText}>Categories</Text>
         </EasyButton>
       </View>
       <View>
         <Header searchBar rounded>
           <Item style={{ padding: 5 }}>
-            <AntDesign name="search" size={24} />
+            <AntDesign name="search1" size={24} />
             <Input
               placeholder="Search"
               onChangeText={(text) => searchProduct(text)}

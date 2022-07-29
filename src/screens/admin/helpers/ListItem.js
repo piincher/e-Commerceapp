@@ -42,24 +42,24 @@ const ListItem = (props) => {
                 right: 10,
               }}
             >
-              <AntDesign name="search" size={24} />
+              <AntDesign name="closecircle" size={24} color="black" />
             </TouchableOpacity>
             <EasyButton
               medium
               secondary
               onPress={() => [
-                props.navigation.navigate("ProductForm", { item: props }),
+                props.navigation.navigate("createProduct", { item: props }),
                 setModalVisible(false),
               ]}
             >
-              <Text style={styles.textStyle}>Edit</Text>
+              <Text style={styles.textStyle}>Modifier</Text>
             </EasyButton>
             <EasyButton
               medium
               danger
               onPress={() => [props.delete(props._id), setModalVisible(false)]}
             >
-              <Text style={styles.textStyle}>Delete</Text>
+              <Text style={styles.textStyle}>Effacer</Text>
             </EasyButton>
           </View>
         </View>

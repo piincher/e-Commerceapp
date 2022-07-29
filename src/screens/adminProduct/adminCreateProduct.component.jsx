@@ -190,14 +190,8 @@ const CreateProduct = (props) => {
         .post(`${baseUrl}products`, product)
         .then((res) => {
           if (res.status == 200 || res.status == 201) {
-            Toast.show({
-              topOffset: 60,
-              type: "success",
-              text1: "New Product added",
-              text2: "",
-            });
             setTimeout(() => {
-              props.navigation.navigate("Products");
+              props.navigation.navigate("admin");
             }, 500);
           }
         })
@@ -227,7 +221,7 @@ const CreateProduct = (props) => {
           }}
         />
         <TouchableOpacity onPress={pickImage} style={styles.imagePicker}>
-          <AntDesign name="search" size={24} />
+          <AntDesign name="camera" size={24} color="black" />
         </TouchableOpacity>
       </View>
       <View style={styles.label}>

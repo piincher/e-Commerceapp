@@ -21,9 +21,9 @@ export const ProductCard = (props) => {
   const dispatch = useDispatch();
 
   const navigation = useNavigation();
-  const { name, price, image, countInStock } = props;
+  const { name, price, image, countInStock, id } = props;
 
-  const item = { name, price, image, countInStock };
+  const item = { name, price, image, countInStock, id };
 
   const addTocart = async () => {
     // dispatch(addtoCart(product));

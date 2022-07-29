@@ -23,7 +23,6 @@ const cartItemsSlice = createSlice({
   initialState: initialState,
   reducers: {
     addtoCart: (state, { payload }) => {
-      const { $oid } = payload;
       state.cartItems.push({ ...payload, count: 1 });
       let unique = _.uniqWith(state.cartItems, _.isEqual);
       state.cartItems = unique;
