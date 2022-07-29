@@ -10,7 +10,7 @@ export const SearchedProduct = ({ filteredProduct }) => {
       {filteredProduct.length > 0 ? (
         filteredProduct.map((product) => {
           return (
-            <View key={product._id}>
+            <View key={product.id}>
               <SingleProduct item={product} searchScreen={true} />
             </View>
           );

@@ -35,7 +35,7 @@ export const CategoryFilter = ({
               categoriesFilter(item.id);
               setActive(categories.indexOf(item));
             }}
-            key={item._id.$oid}
+            key={item.id}
           >
             <Text
               style={
