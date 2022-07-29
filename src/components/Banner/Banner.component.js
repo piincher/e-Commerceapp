@@ -17,9 +17,9 @@ export const Banner = () => {
 
   useEffect(() => {
     setBanner([
-      "https://images.vexels.com/media/users/3/126443/preview2/ff9af1e1edfa2c4a46c43b0c2040ce52-macbook-pro-touch-bar-banner.jpg",
-      "https://www.yardproduct.com/blog/wp-content/uploads/2016/01/gardening-banner.jpg",
-      "https://pbs.twimg.com/media/D7P_yLdX4AAvJWO.jpg",
+      "https://res.cloudinary.com/piincher/image/upload/v1659006533/myma_cho7oe.jpg",
+      "https://res.cloudinary.com/piincher/image/upload/v1659006547/panier_otdmls.jpg",
+      "https://res.cloudinary.com/piincher/image/upload/v1635337070/rfnkpyjea6w2lc99bijb.jpg",
     ]);
 
     return () => {

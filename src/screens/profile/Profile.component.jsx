@@ -1,22 +1,21 @@
-import React, { useContext, useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback } from "react";
 import { View, Text, ScrollView, Button, StyleSheet } from "react-native";
 import { Container } from "native-base";
 import { useFocusEffect } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 // import OrderCard from "../../Shared/OrderCard";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import { baseUrl } from "../../constants/baseUrl";
 
-// import { logoutUser } from "../../Context/actions/Auth.actions";
+import { logout } from "../../redux/reducers/users";
 
 const Profile = (props) => {
   let { token, userInfo } = useSelector((state) => state.user);
-  console.log("profile page", userInfo.user.id);
-  console.log("profile page token", token);
+
   const [userProfile, setUserProfile] = useState({});
   const [orders, setOrders] = useState();
-
+  const dispatch = useDispatch();
   useFocusEffect(
     useCallback(() => {
       if (!token) {
@@ -33,17 +32,17 @@ const Profile = (props) => {
         })
         .catch((error) => console.log(error));
 
-      // axios
-      //   .get(`${baseUrl}orders`)
-      //   .then((x) => {
-      //     const data = x.data;
-      //     console.log(data);
-      //     const userOrders = data.filter(
-      //       (order) => order.user._id === context.stateUser.user.sub
-      //     );
-      //     setOrders(userOrders);
-      //   })
-      //   .catch((error) => console.log(error));
+      axios
+        .get(`${baseUrl}orders`)
+        .then((x) => {
+          const data = x.data;
+          console.log("data", data);
+          const userOrders = data.filter(
+            (order) => order.user._id === userInfo.user.id
+          );
+          setOrders(userOrders);
+        })
+        .catch((error) => console.log(error));
 
       return () => {
         setUserProfile();
@@ -52,22 +51,6 @@ const Profile = (props) => {
     }, [token])
   );
 
-  // useEffect(() => {
-  //   const getProfile = async () => {
-  //     const config = {
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         Authorization: `Bearer ${token}`,
-  //       },
-  //     };
-  //     const response = await axios.get(
-  //       `${baseUrl}users/${userInfo.user.id}`,
-  //       config
-  //     );
-  //     console.log("user profile from backend", response.data);
-  //   };
-  //   getProfile();
-  // }, [token]);
   return (
     <Container style={styles.container}>
       <ScrollView contentContainerStyle={styles.subContainer}>
@@ -90,17 +73,16 @@ const Profile = (props) => {
             title={"Sign Out"}
             onPress={() => [
               AsyncStorage.removeItem("token"),
-              setUserProfile({}),
+              dispatch(logout()),
 
               props.navigation.navigate("Utilisateur"),
-              (token = null),
             ]}
           />
         </View>
         <View style={styles.order}>
           <Text style={{ fontSize: 20 }}>My Orders</Text>
           <View>
-            {orders ? (
+            {orders?.length ? (
               orders.map((x) => {
                 return <OrderCard key={x.id} {...x} />;
               })
@@ -129,6 +111,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     alignItems: "center",
     marginBottom: 60,
+    flex: 1,
   },
 });
 

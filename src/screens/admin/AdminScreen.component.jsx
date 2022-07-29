@@ -47,7 +47,7 @@ const AdminScreen = (props) => {
   useFocusEffect(
     useCallback(() => {
       // Get Token
-      AsyncStorage.getItem("jwt")
+      AsyncStorage.getItem("token")
         .then((res) => {
           setToken(res);
         })

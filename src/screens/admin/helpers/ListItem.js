@@ -21,7 +21,7 @@ const ListItem = (props) => {
   return (
     <View>
       <Modal
-        animationType="fade"
+        animationType="slide"
         transparent={true}
         visible={modalVisible}
         onRequestClose={() => {
@@ -85,14 +85,14 @@ const ListItem = (props) => {
           resizeMode="contain"
           style={styles.image}
         />
-        <Text style={styles.item}>{props.brand}</Text>
+        <Text style={styles.item}>{props?.brand}</Text>
         <Text style={styles.item} numberOfLines={1} ellipsizeMode="tail">
-          {props.name}
+          {props?.name}
         </Text>
         <Text style={styles.item} numberOfLines={1} ellipsizeMode="tail">
-          {props.category.name}
+          {props.category?.name}
         </Text>
-        <Text style={styles.item}>$ {props.price}</Text>
+        <Text style={styles.item}> {props.price} FCFA</Text>
       </TouchableOpacity>
     </View>
   );

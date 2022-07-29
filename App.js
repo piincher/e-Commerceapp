@@ -26,6 +26,7 @@ import Profile from "./src/screens/profile/Profile.component";
 import { useSelector } from "react-redux";
 import CreateProduct from "./src/screens/adminProduct/adminCreateProduct.component";
 import Categories from "./src/screens/categories/Categories.component";
+import Orders from "./src/screens/adminOrders/AdminOrder.component";
 const Tab = createBottomTabNavigator();
 const TabHeader = createMaterialTopTabNavigator();
 const Stack = createStackNavigator();
@@ -59,6 +60,7 @@ function AppWrapper() {
           <Stack.Screen name="profile" component={Profile} />
           <Stack.Screen name="createProduct" component={CreateProduct} />
           <Stack.Screen name="Categories" component={Categories} />
+          <Stack.Screen name="Orders" component={Orders} />
         </Stack.Navigator>
 
         <Toast ref={(ref) => Toast.setRef(ref)} />

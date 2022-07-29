@@ -18,19 +18,12 @@ import _ from "lodash";
 const width = Dimensions.get("screen").width / 2 - 30;
 
 export const ProductCard = (props) => {
-  const { cartItems } = useSelector((state) => state.cartItems);
   const dispatch = useDispatch();
 
   const navigation = useNavigation();
-  const {
-    name,
-    price,
-    image,
-    countInStock,
-    category: { $oid },
-  } = props;
+  const { name, price, image, countInStock } = props;
 
-  const item = { name, price, image, countInStock, $oid };
+  const item = { name, price, image, countInStock };
 
   const addTocart = async () => {
     // dispatch(addtoCart(product));

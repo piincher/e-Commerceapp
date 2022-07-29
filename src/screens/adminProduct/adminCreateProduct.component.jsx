@@ -26,7 +26,7 @@ const CreateProduct = (props) => {
   const [name, setName] = useState();
   const [price, setPrice] = useState();
   const [description, setDescription] = useState();
-  const [image, setImage] = useState();
+  const [image, setImage] = useState({ url: "", public_id: "" });
   const [mainImage, setMainImage] = useState();
   const [category, setCategory] = useState();
   const [categories, setCategories] = useState([]);
@@ -38,7 +38,7 @@ const CreateProduct = (props) => {
   const [richDescription, setRichDescription] = useState();
   const [numReviews, setNumReviews] = useState(0);
   const [item, setItem] = useState(null);
-
+  const [uploadImage, setUploadImage] = useState("");
   useEffect(() => {
     if (!props.route.params) {
       setItem(null);
@@ -54,7 +54,7 @@ const CreateProduct = (props) => {
       setCountInStock(props.route.params.item.countInStock.toString());
     }
 
-    AsyncStorage.getItem("jwt")
+    AsyncStorage.getItem("token")
       .then((res) => {
         setToken(res);
       })
@@ -82,40 +82,62 @@ const CreateProduct = (props) => {
   }, []);
 
   const pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
+    let permissionResult =
+      await ImagePicker.requestMediaLibraryPermissionsAsync();
+    // console.log(permissionResult);
+    // return;
+    if (permissionResult.granted === false) {
+      alert("Camera access is required");
+      return;
+    }
+    // get image from image
+    let pickerResult = await ImagePicker.launchImageLibraryAsync({
       allowsEditing: true,
       aspect: [4, 3],
-      quality: 1,
+      base64: true,
     });
+    // console.log("PICKER RESULT => ", pickerResult);
+    if (pickerResult.cancelled === true) {
+      return;
+    }
+    // save to state for preview
+    let base64Image = `data:image/jpg;base64,${pickerResult.base64}`;
+    setUploadImage(base64Image);
+    // send to backend for uploading to cloudinary
+    try {
+      const { data } = await axios.post(`${baseUrl}products/upload`, {
+        image: base64Image,
+      });
 
-    if (!result.cancelled) {
-      setMainImage(result.uri);
-      setImage(result.uri);
+      setImage({ url: data.url, public_id: data.public_id });
+    } catch (error) {
+      console.log("error");
     }
   };
 
   const addProduct = () => {
     if (
-      name == "" ||
-      brand == "" ||
-      price == "" ||
-      description == "" ||
-      category == "" ||
-      countInStock == ""
+      name === "" ||
+      brand === "" ||
+      price === "" ||
+      description === "" ||
+      category === "" ||
+      countInStock === "" ||
+      image ===
+        "https://cdn.pixabay.com/photo/2012/04/01/17/29/box-23649_960_720.png"
     ) {
       setError("Please fill in the form correctly");
     }
 
     let formData = new FormData();
 
-    const newImageUri = "file:///" + image.split("file:/").join("");
-
     // formData.append("image", {
     //     uri: newImageUri,
     //     type: mime.getType(newImageUri),
     //     name: newImageUri.split("/").pop()
     // });
+    formData.append("image", image.url);
+
     formData.append("name", name);
     formData.append("brand", brand);
     formData.append("price", price);
@@ -126,27 +148,32 @@ const CreateProduct = (props) => {
     formData.append("rating", rating);
     formData.append("numReviews", numReviews);
     formData.append("isFeatured", isFeatured);
-
-    const config = {
-      headers: {
-        "Content-Type": "multipart/form-data",
-        Authorization: `Bearer ${token}`,
-      },
+    const product = {
+      name,
+      image: image.url,
+      brand,
+      price,
+      description,
+      category,
+      countInStock,
+      richDescription,
+      rating,
+      numReviews,
+      isFeatured,
     };
+    // const config = {
+    //   headers: {
+    //     "Content-Type": "multipart/form-data",
+    //   },
+    // };
 
     if (item !== null) {
       axios
-        .put(`${baseUrl}products/${item.id}`, formData, config)
+        .put(`${baseUrl}products/${item.id}`, product)
         .then((res) => {
           if (res.status == 200 || res.status == 201) {
-            Toast.show({
-              topOffset: 60,
-              type: "success",
-              text1: "Product successfuly updated",
-              text2: "",
-            });
             setTimeout(() => {
-              props.navigation.navigate("Products");
+              props.navigation.navigate("admin");
             }, 500);
           }
         })
@@ -160,7 +187,7 @@ const CreateProduct = (props) => {
         });
     } else {
       axios
-        .post(`${baseUrl}products`, formData, config)
+        .post(`${baseUrl}products`, product)
         .then((res) => {
           if (res.status == 200 || res.status == 201) {
             Toast.show({
@@ -178,17 +205,27 @@ const CreateProduct = (props) => {
           Toast.show({
             topOffset: 60,
             type: "error",
-            text1: "Something went wrong",
+            text1: "Something went wrong when create ",
             text2: "Please try again",
           });
         });
     }
   };
 
+  console.log("image url from cloudinary", image);
+
   return (
     <FormContainer title="Add Product">
       <View style={styles.imageContainer}>
-        <Image style={styles.image} source={{ uri: mainImage }} />
+        <Image
+          style={styles.image}
+          source={{
+            uri:
+              image && image.url
+                ? image.url
+                : "https://cdn.pixabay.com/photo/2012/04/01/17/29/box-23649_960_720.png",
+          }}
+        />
         <TouchableOpacity onPress={pickImage} style={styles.imagePicker}>
           <AntDesign name="search" size={24} />
         </TouchableOpacity>
