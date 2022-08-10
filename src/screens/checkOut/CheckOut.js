@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Text, View, Button } from "react-native";
-import { Item, Picker, Toast } from "native-base";
-import Icon from "react-native-vector-icons/FontAwesome";
+
+import Toast from "react-native-toast-message";
 import FormContainer from "../../components/formContainer/FormContainer";
 import Input from "../../components/Input/Input";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
@@ -9,46 +9,73 @@ import { RegularHeader } from "../../components/regularHeader/RegularHeader.comp
 import { useSelector } from "react-redux";
 
 const Checkout = (props) => {
+  let { token, userInfo } = useSelector((state) => state.user);
+  console.log("token", token);
   const [orderItems, setOrderItems] = useState([]);
   const [address, setAddress] = useState("");
   const [address2, setAddress2] = useState("");
   const [city, setCity] = useState("");
-  const [zip, setZip] = useState("");
-  const [country, setCountry] = useState([]);
+  const user = userInfo.user;
   const [phone, setPhone] = useState("");
 
   const { cartItems } = useSelector((state) => state.cartItems);
 
   useEffect(() => {
     setOrderItems(cartItems);
+    if (token === null) {
+      props.navigation.navigate("cartScreen");
+      Toast.show({
+        topOffset: 60,
+        type: "error",
+        text1: "S'il vous plait connectez-vous avant de continuer ",
+      });
 
-    props.navigation.navigate("Cart");
-    // Toast.show({
-    //   topOffset: 60,
-    //   type: "error",
-    //   text1: "Please Login to Checkout",
-    //   text2: "",
-    // });
+      return;
+    }
 
     return () => {
-      setOrderItems();
+      setOrderItems([]);
     };
-  }, []);
+  }, [token]);
 
   const checkOut = () => {
     console.log("orders", orderItems);
+    if (phone === "" || phone.length > 8) {
+      Toast.show({
+        topOffset: 60,
+        type: "error",
+        text1: "le numero ne doit pas depasser 8 chiffre",
+      });
+      return;
+    }
+    if (phone === "" || phone.length < 8) {
+      Toast.show({
+        topOffset: 60,
+        type: "error",
+        text1: "le numero ne doit pas etre moins de 8 chiffre",
+      });
+      return;
+    }
+
+    if (address === "" || address2 === "" || city === "") {
+      Toast.show({
+        topOffset: 60,
+        type: "error",
+        text1: "remplir😊toutes les champs",
+      });
+      return;
+    }
 
     let order = {
       city,
-      country,
+
       dateOrdered: Date.now(),
       orderItems,
       phone,
       shippingAddress1: address,
       shippingAddress2: address2,
       status: "3",
-      // user,
-      zip,
+      user,
     };
 
     props.navigation.navigate("Payment", { order: order });
@@ -59,7 +86,7 @@ const Checkout = (props) => {
       extraHeight={200}
       enableOnAndroid={true}
     >
-      <RegularHeader iconRight="shoppingcart" navigation={props.navigation} />
+      <RegularHeader iconRight='shoppingcart' navigation={props.navigation} />
       <FormContainer title={"Shipping Address"}>
         <Input
           placeholder={"Phone"}
@@ -81,7 +108,7 @@ const Checkout = (props) => {
           onChangeText={(text) => setAddress2(text)}
         />
         <Input
-          placeholder={"City"}
+          placeholder={"quartier"}
           name={"city"}
           value={city}
           onChangeText={(text) => setCity(text)}
@@ -108,13 +135,7 @@ const Checkout = (props) => {
             </Picker>
         </Item> */}
         <View style={{ width: "80%", alignItems: "center" }}>
-          <Button
-            title="Confirm"
-            onPress={() => checkOut()}
-            disabled={
-              phone === "" && address === "" && address2 === "" && city === ""
-            }
-          />
+          <Button title='Confirm' onPress={() => checkOut()} />
         </View>
       </FormContainer>
     </KeyboardAwareScrollView>

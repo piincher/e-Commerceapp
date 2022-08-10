@@ -39,7 +39,6 @@ const ProductScreen = () => {
 
   useFocusEffect(
     useCallback(() => {
-      let isMounted = true;
       const getProducts = async () => {
         setLoading(true);
         const res = await axios.get(`${baseUrl}products`);
@@ -56,10 +55,9 @@ const ProductScreen = () => {
         console.log("categories", res.data);
         setCategories(res.data);
       };
-      if (isMounted) {
-        getProducts();
-        getCategories();
-      }
+
+      getProducts();
+      getCategories();
 
       return () => {
         setProducts([]);
@@ -67,7 +65,6 @@ const ProductScreen = () => {
         setFocus(false);
         setActive();
         setInitialState([]);
-        isMounted = false;
       };
     }, [])
   );

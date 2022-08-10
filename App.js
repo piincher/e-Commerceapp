@@ -13,7 +13,7 @@ import { NativeBaseProvider } from "native-base";
 import { CartIcon } from "./src/components/cartIcon/CartIcon.component";
 // screens
 import Cart from "./src/screens/cart/Cart.component";
-import Checkout from "./src/screens/checkOut/CheckOut";
+
 import ProductScreen from "./src/screens/product/ProductScreen.component";
 import AdminScreen from "./src/screens/admin/AdminScreen.component";
 import OnboardingScreen from "./src/screens/onBoarding/OnBoarding.component";
@@ -23,6 +23,7 @@ import Confirm from "./src/screens/Confirm/Confirm";
 import Login from "./src/screens/Login/Login.component";
 import Register from "./src/screens/Register/Register.component";
 import Profile from "./src/screens/profile/Profile.component";
+import Checkout from "./src/screens/checkOut/CheckOut";
 import { useSelector } from "react-redux";
 import CreateProduct from "./src/screens/adminProduct/adminCreateProduct.component";
 import Categories from "./src/screens/categories/Categories.component";
@@ -43,7 +44,7 @@ function AppWrapper() {
       setIsAppFirstLaunched(false);
     }
 
-    AsyncStorage.removeItem("isAppFirstLaunched");
+    // AsyncStorage.removeItem("isAppFirstLaunched");
   }, []);
 
   return (
@@ -51,16 +52,16 @@ function AppWrapper() {
       <NavigationContainer>
         <Stack.Navigator screenOptions={{ headerShown: false }}>
           {isAppFirstLaunched && (
-            <Stack.Screen name="first" component={OnboardingScreen} />
+            <Stack.Screen name='first' component={OnboardingScreen} />
           )}
-          <Stack.Screen name="HomeSection" component={BottomNavigation} />
-          <Stack.Screen name="checkout" component={HeaderTabNavigation} />
-          <Stack.Screen name="productDetail" component={ProductDetails} />
-          <Stack.Screen name="Register" component={Register} />
-          <Stack.Screen name="profile" component={Profile} />
-          <Stack.Screen name="createProduct" component={CreateProduct} />
-          <Stack.Screen name="Categories" component={Categories} />
-          <Stack.Screen name="Orders" component={Orders} />
+          <Stack.Screen name='HomeSection' component={BottomNavigation} />
+          {/* <Stack.Screen name="checkout" component={Checkout} /> */}
+          <Stack.Screen name='productDetail' component={ProductDetails} />
+          <Stack.Screen name='Register' component={Register} />
+          {/* <Stack.Screen name="profile" component={Profile} /> */}
+          <Stack.Screen name='createProduct' component={CreateProduct} />
+          <Stack.Screen name='Categories' component={Categories} />
+          <Stack.Screen name='Orders' component={Orders} />
         </Stack.Navigator>
 
         <Toast ref={(ref) => Toast.setRef(ref)} />
@@ -73,9 +74,75 @@ function AppWrapper() {
 const HeaderTabNavigation = () => {
   return (
     <TabHeader.Navigator>
-      <Tab.Screen name="Payment" component={Payment} />
-      <Tab.Screen name="Confirm" component={Confirm} />
+      <Tab.Screen name='Payment' component={Payment} />
+      <Tab.Screen name='Confirm' component={Confirm} />
     </TabHeader.Navigator>
+  );
+};
+
+// user navigator
+const UserNavigator = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name='Login'
+        component={Login}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name='Register'
+        component={Register}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name='profile'
+        component={Profile}
+        options={{
+          headerShown: false,
+        }}
+      />
+    </Stack.Navigator>
+  );
+};
+
+//cart navigator
+
+const CartNavigator = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name='cartScreen'
+        component={Cart}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name='checkout'
+        component={Checkout}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name='Payment'
+        component={Payment}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name='Confirm'
+        component={Confirm}
+        options={{
+          headerShown: false,
+        }}
+      />
+    </Stack.Navigator>
   );
 };
 
@@ -90,7 +157,7 @@ const BottomNavigation = () => {
   const admin = userInfo;
   return (
     <Tab.Navigator
-      initialRouteName="Home"
+      initialRouteName='Home'
       screenOptions={({ route }) => ({
         tabBarIcon: ({ color, size }) => {
           let iconName;
@@ -107,7 +174,7 @@ const BottomNavigation = () => {
 
           // You can return any component that you like here!
           return iconName === "user" ? (
-            <AntDesign name="user" size={24} color="black" />
+            <AntDesign name='user' size={24} color='black' />
           ) : iconName === "cart" ? (
             <>
               <CartIcon />
@@ -122,12 +189,12 @@ const BottomNavigation = () => {
         headerShown: false,
       })}
     >
-      <Tab.Screen name="Accueil" component={ProductScreen} />
-      <Tab.Screen name="cart" component={Cart} />
-      {!admin?.user?.isAdmin ? (
-        <Tab.Screen name="admin" component={AdminScreen} />
+      <Tab.Screen name='Accueil' component={ProductScreen} />
+      <Tab.Screen name='cart' component={CartNavigator} />
+      {admin?.user?.isAdmin ? (
+        <Tab.Screen name='admin' component={AdminScreen} />
       ) : null}
-      <Tab.Screen name="Utilisateur" component={Login} />
+      <Tab.Screen name='Utilisateur' component={UserNavigator} />
     </Tab.Navigator>
   );
 };

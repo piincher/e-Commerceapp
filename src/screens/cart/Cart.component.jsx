@@ -14,7 +14,6 @@ const Cart = ({ navigation }) => {
     dispatch(clearCart());
   };
 
-  console.log("cart items", cartItems);
   let total = 0;
 
   cartItems.forEach((cart) => {
@@ -70,7 +69,11 @@ const Cart = ({ navigation }) => {
           disabled={cartItems.length === 0}
           onPress={checkoutHandler}
         >
-          <Text style={styles.textContainer}>caisse</Text>
+          <Text
+            style={cartItems.length > 0 ? styles.textContainer : styles.disable}
+          >
+            caisse
+          </Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
@@ -96,5 +99,10 @@ const styles = StyleSheet.create({
   },
   price: {
     color: COLORS.Orange,
+  },
+  disable: {
+    marginHorizontal: 35,
+    fontSize: 18,
+    color: COLORS.Silver,
   },
 });

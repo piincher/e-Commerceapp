@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { View, StyleSheet, Dimensions, ScrollView, Button } from "react-native";
 import { Text, Left, Right, ListItem, Thumbnail, Body } from "native-base";
-import { connect } from "react-redux";
+import axios from "axios";
+import { baseUrl } from "../../constants/baseUrl";
 
-// import Toast from "react-native-toast-message";
+import Toast from "react-native-toast-message";
 // import axios from "axios";
 // import baseURL from "../../../assets/common/baseUrl";
 
@@ -12,63 +13,68 @@ var { width, height } = Dimensions.get("window");
 const Confirm = (props) => {
   // Add this
 
+  const finalOrder = props.route.params;
+  console.log("params order", finalOrder.order.orderItems);
+
   const [productUpdate, setProductUpdate] = useState([]);
-  //   useEffect(() => {
-  //       if(finalOrder) {
-  //         getProducts(finalOrder);
-  //       }
-  //     return () => {
-  //       setProductUpdate();
-  //     };
-  //   }, [props]);
+  useEffect(() => {
+    if (finalOrder) {
+      getProducts(finalOrder);
+    }
+    return () => {
+      setProductUpdate();
+    };
+  }, [props]);
 
-  // Add this
-  //   const getProducts = (x) => {
-  //     const order = x.order.order;
-  //     var products = [];
-  //     if(order) {
-  //         order.orderItems.forEach((cart) => {
-  //             axios
-  //               .get(`${baseURL}products/${cart.product}`)
-  //               .then((data) => {
-  //                 products.push(data.data);
-  //                 setProductUpdate(products);
-  //               })
-  //               .catch((e) => {
-  //                 console.log(e);
-  //               });
-  //           });
-  //     }
+  const getProducts = (x) => {
+    console.log("x product", x.order.orderItems.orderItems);
+    const order = x.order.orderItems;
+    const products = [];
+    if (order) {
+      order.orderItems.forEach((cart) => {
+        axios
+          .get(`${baseUrl}products/${cart.id}`)
+          .then((data) => {
+            console.log("response", data.data);
+            products.push(data.data);
+            setProductUpdate(products);
+          })
+          .catch((e) => {
+            console.log(e);
+          });
+      });
+    }
+  };
 
-  //   };
-
-  //   const confirmOrder = () => {
-  //     const order = finalOrder.order.order;
-  //     axios
-  //       .post(`${baseURL}orders`, order)
-  //       .then((res) => {
-  //         if (res.status == 200 || res.status == 201) {
-  //           Toast.show({
-  //             topOffset: 60,
-  //             type: "success",
-  //             text1: "Order Completed",
-  //             text2: "",
-  //           });
-  //           setTimeout(() => {
-  //             props.clearCart();
-  //             props.navigation.navigate("Cart");
-  //           }, 500);
-  //         }
-  //       })
-  //       .catch((error) => {
-  //         Toast.show({
-  //           topOffset: 60,
-  //           type: "error",
-  //           text1: "Something went wrong",
-  //           text2: "Please try again",
-  //         });
-  //       });
-  //   };
+  const confirmOrder = () => {
+    const order = finalOrder.order.orderItems.orderItems;
+    console.log("click", order);
+    axios
+      .post(`${baseUrl}orders`, order)
+      .then((res) => {
+        if (res.status == 200 || res.status == 201) {
+          Toast.show({
+            topOffset: 60,
+            type: "success",
+            text1: "Order Completed",
+            text2: "",
+          });
+          setTimeout(() => {
+            props.clearCart();
+            props.navigation.navigate("Accueil");
+          }, 500);
+        }
+      })
+      .catch((error) => {
+        console.log("error", error);
+        Toast.show({
+          topOffset: 60,
+          type: "error",
+          text1: "Something went wrong",
+          text2: "Please try again",
+        });
+      });
+  };
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -79,18 +85,20 @@ const Confirm = (props) => {
             <Text style={styles.title}>
               methode de payment : {props.route.params.order.selected}
             </Text>
-            {/* <View style={{ padding: 8 }}>
-              <Text>Address: {finalOrder.order.order.shippingAddress1}</Text>
-              <Text>Address2: {finalOrder.order.order.shippingAddress2}</Text>
-              <Text>City: {finalOrder.order.order.city}</Text>
-              <Text>Zip Code: {finalOrder.order.order.zip}</Text>
-              <Text>Country: {finalOrder.order.order.country}</Text>
-            </View> */}
+            <View style={{ padding: 8 }}>
+              <Text>
+                Address: {finalOrder.order.orderItems.shippingAddress1}
+              </Text>
+              <Text>
+                Address2: {finalOrder.order.orderItems.shippingAddress2}
+              </Text>
+              <Text>phone: {finalOrder.order.orderItems.phone}</Text>
+            </View>
             <Text style={styles.title}>Items:</Text>
             {/* CHANGE THIS */}
-            {props.route.params.order.cartItems && (
+            {finalOrder.order.orderItems.orderItems && (
               <>
-                {props.route.params.order.cartItems.map((x) => {
+                {finalOrder.order.orderItems.orderItems.map((x) => {
                   return (
                     <ListItem style={styles.listItem} key={x.name} avatar>
                       <Left>
@@ -112,7 +120,7 @@ const Confirm = (props) => {
           </View>
         ) : null}
         <View style={{ alignItems: "center", margin: 20 }}>
-          <Button title={"Place order"} onPress={() => console.log("place")} />
+          <Button title={"Place order"} onPress={() => confirmOrder()} />
         </View>
       </View>
     </ScrollView>

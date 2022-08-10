@@ -22,19 +22,14 @@ const methods = [
   //   { name: "Card Payment", value: 3 },
 ];
 
-const paymentCards = [
-  { name: "Wallet", value: 1 },
-  { name: "Visa", value: 2 },
-  { name: "MasterCard", value: 3 },
-  { name: "Other", value: 4 },
-];
+
 
 const Payment = (props) => {
   const [selected, setSelected] = useState("Orange Money");
   const [card, setCard] = useState();
   const { cartItems } = useSelector((state) => state.cartItems);
-  const order = { cartItems, selected };
-  console.log("payment", order);
+  const orderItems = props.route.params.order;
+  const order = { orderItems, selected };
   return (
     <Container>
       <Header>
@@ -74,7 +69,9 @@ const Payment = (props) => {
           <Button
             title={"Confirm"}
             onPress={() =>
-              props.navigation.navigate("Confirm", { order: order })
+              props.navigation.navigate("Confirm", {
+                order: order,
+              })
             }
           />
         </View>
