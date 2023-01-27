@@ -5,7 +5,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import React from "react";
+import { useEffect, useState } from "react";
 import { View } from "react-native";
 import { Provider } from "react-redux";
 import { store } from "./src/redux/store";
@@ -33,9 +33,13 @@ const TabHeader = createMaterialTopTabNavigator();
 const Stack = createStackNavigator();
 
 function AppWrapper() {
-  const [isAppFirstLaunched, setIsAppFirstLaunched] = React.useState(null);
+  const [isAppFirstLaunched, setIsAppFirstLaunched] = useState(null);
 
-  React.useEffect(async () => {
+  useEffect(() => {
+    CheckFirstLaunch();
+  }, []);
+
+  const CheckFirstLaunch = async () => {
     const appData = await AsyncStorage.getItem("isAppFirstLaunched");
     if (appData == null) {
       setIsAppFirstLaunched(true);
@@ -44,8 +48,8 @@ function AppWrapper() {
       setIsAppFirstLaunched(false);
     }
 
-    // AsyncStorage.removeItem("isAppFirstLaunched");
-  }, []);
+    AsyncStorage.removeItem("isAppFirstLaunched");
+  };
 
   return (
     isAppFirstLaunched !== null && (
@@ -64,21 +68,21 @@ function AppWrapper() {
           <Stack.Screen name='Orders' component={Orders} />
         </Stack.Navigator>
 
-        <Toast ref={(ref) => Toast.setRef(ref)} />
+        <Toast />
       </NavigationContainer>
     )
   );
 }
 
 // header tab navigator for checkout
-const HeaderTabNavigation = () => {
-  return (
-    <TabHeader.Navigator>
-      <Tab.Screen name='Payment' component={Payment} />
-      <Tab.Screen name='Confirm' component={Confirm} />
-    </TabHeader.Navigator>
-  );
-};
+// const HeaderTabNavigation = () => {
+//   return (
+//     <TabHeader.Navigator>
+//       <Tab.Screen name='Payment' component={Payment} />
+//       <Tab.Screen name='Confirm' component={Confirm} />
+//     </TabHeader.Navigator>
+//   );
+// };
 
 // user navigator
 const UserNavigator = () => {
