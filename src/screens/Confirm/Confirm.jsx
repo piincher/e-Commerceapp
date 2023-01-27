@@ -3,18 +3,28 @@ import { View, StyleSheet, Dimensions, ScrollView, Button } from "react-native";
 import { Text, Left, Right, ListItem, Thumbnail, Body } from "native-base";
 import axios from "axios";
 import { baseUrl } from "../../constants/baseUrl";
-
+import { useDispatch } from "react-redux";
 import Toast from "react-native-toast-message";
 // import axios from "axios";
 // import baseURL from "../../../assets/common/baseUrl";
+import { clearCart } from "../../redux/reducers/cartItems";
+import { CommonActions } from "@react-navigation/native";
 
 var { width, height } = Dimensions.get("window");
 
 const Confirm = (props) => {
   // Add this
 
+  const dispatch = useDispatch();
   const finalOrder = props.route.params;
   console.log("params order", finalOrder.order.orderItems);
+
+  let total = 0;
+
+  finalOrder.order.orderItems.orderItems.forEach((cart) => {
+    return (total += cart.price);
+  });
+  console.log(total);
 
   const [productUpdate, setProductUpdate] = useState([]);
   useEffect(() => {
@@ -46,22 +56,30 @@ const Confirm = (props) => {
     }
   };
 
+  // add multiple items in the cart
+
   const confirmOrder = () => {
-    const order = finalOrder.order.orderItems.orderItems;
+    const order = finalOrder.order;
     console.log("click", order);
     axios
-      .post(`${baseUrl}orders`, order)
+      .post(`${baseUrl}orders`, { order, total })
       .then((res) => {
+        console.log("order response", res.data);
         if (res.status == 200 || res.status == 201) {
           Toast.show({
             topOffset: 60,
             type: "success",
-            text1: "Order Completed",
-            text2: "",
+            text1: "Order Completedd",
+            text2: " wow",
           });
           setTimeout(() => {
-            props.clearCart();
-            props.navigation.navigate("Accueil");
+            dispatch(clearCart());
+            props.navigation.dispatch(
+              CommonActions.reset({
+                index: 1,
+                routes: [{ name: "Accueil" }],
+              })
+            );
           }, 500);
         }
       })

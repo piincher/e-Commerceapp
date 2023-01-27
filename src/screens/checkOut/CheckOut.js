@@ -19,7 +19,7 @@ const Checkout = (props) => {
   const [phone, setPhone] = useState("");
 
   const { cartItems } = useSelector((state) => state.cartItems);
-
+  console.log("cart", cartItems);
   useEffect(() => {
     setOrderItems(cartItems);
     if (token === null) {
